@@ -1,4 +1,4 @@
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -6,9 +6,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 public class Main {
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-        String url = "https://rxefy.com/";
+    public static void main(String[] args) throws IOException {
+        String url = "https://facebook.com/";
+        new BufferedWriter(new FileWriter("Result.csv"));
         crawl(1, url, new ArrayList<String>());
     }
         private static void crawl(int level, String url, ArrayList<String> visited){
@@ -31,6 +31,7 @@ public class Main {
                     if (con.response().statusCode() == 200) {
                         System.out.println("Link: " + url);
                         System.out.println(doc.title());
+                        writeCsvFile("Result.csv","title : " + doc.title(),"Link: " + url);
                         v.add(url);
                         return doc;
                     }
@@ -39,6 +40,17 @@ public class Main {
                     return null;
                 }
             }
+
+
+
+    private static void writeCsvFile(String filename, String Url,String title) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename,true))) {
+            writer.write(Url + "\n");
+            writer.write(title + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
